@@ -10,10 +10,40 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:component-scan base-package="com.baidu.disconf.client.test"/>
-
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <bean class="com.baidu.disconf.client.store.aspect.DisconfAspectJ"/>
+    <!--<bean class="com.baidu.disconf.client.store.aspect.DisconfAspectJ"/>-->
 
+    <!-- 使用disconf必须添加以下配置 -->
+    <bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
+          destroy-method="destroy">
+        <property name="scanPackage" value="com.baidu.disconf.client.test.my"/>
+    </bean>
+
+    <bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
+          init-method="init" destroy-method="destroy">
+    </bean>
+
+
+    <!-- 使用托管方式的disconf配置(无代码侵入, 配置更改会自动reload)-->
+    <bean id="configproperties_disconf"
+          class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>jdbc-mysql.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer"
+          class="com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="propertiesArray">
+            <list>
+                <ref bean="configproperties_disconf"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="jdbcConfig" class="com.baidu.disconf.client.test.my.JdbcConfig"/>
 </beans>

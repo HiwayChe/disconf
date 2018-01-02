@@ -1,9 +1,13 @@
 package com.baidu.disconf.client.test.common;
 
+import com.baidu.disconf.client.test.my.JdbcConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -21,14 +25,18 @@ import junit.framework.Assert;
  * @author liaoqiqi
  * @version 2014-6-11
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class BaseSpringTestCase {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BaseSpringTestCase.class);
 
     @Test
     public void pass() {
+        ApplicationContext factory = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        JdbcConfig jdbcConfig = (JdbcConfig) factory.getBean("jdbcConfig");
+        System.out.println(jdbcConfig.getHost());
+
 
     }
 

@@ -31,7 +31,7 @@ def rmdir(top):
             os.rmdir(os.path.join(root, name))
 
 
-#
+#`
 # 复制目录(递归)
 # assets -> output/assets
 # dep    -> output/dep
